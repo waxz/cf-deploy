@@ -1,8 +1,10 @@
-// functions/[...proxy].ts
+// functions/proxy.ts
 
 export async function onRequest(request: Request) {
-  const incomingUrl = new URL(request.url);
-  const targetUrl = incomingUrl.searchParams.get('url');
+  const url = new URL(request.url);
+
+  // Get the target URL to proxy from the query parameter
+  const targetUrl = url.searchParams.get('url');
 
   if (!targetUrl) {
     return new Response('Missing "?url=" query parameter.', { status: 400 });
@@ -18,13 +20,14 @@ export async function onRequest(request: Request) {
 
     const response = new Response(proxyResponse.body, proxyResponse);
 
-    // Allow CORS
+    // Allow CORS for front-end requests
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', '*');
 
     return response;
   } catch (err) {
-    return new Response(`Proxy error: ${err}`, { status: 500 });
+    console.error(`Error during proxying: ${err.message}`);
+    return new Response(`Proxy error: ${err.message}`, { status: 500 });
   }
 }
