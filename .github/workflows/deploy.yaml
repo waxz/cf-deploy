@@ -20,4 +20,4 @@ jobs:
           command: |
             pages project list
             pages project create
-            pages deploy ./public --project-name=my-proxy
+            pages deploy
