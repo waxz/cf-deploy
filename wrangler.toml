@@ -2,6 +2,5 @@ name = "my-proxy-project"
 compatibility_date = "2024-04-27"
 
 pages_build_output_dir = "./public"
-project_name = "my-proxy"
 
 
