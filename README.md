@@ -12,6 +12,7 @@ npx -C /tmp/WebProxy wrangler pages dev  . --port 8888 --ip 0.0.0.0
 
 # deploy to cloudflare
 npx -C /tmp/WebProxy wrangler pages deploy
+# npx -C /tmp/WebProxy wrangler pages deploy --project-name=my-proxy --branch=main --commit-dirty=true --commit-message="Manual deploy from /tmp/WebProxy"
 
 ```
 
