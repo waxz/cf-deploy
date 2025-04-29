@@ -3,6 +3,7 @@ on:
   # push:
   #   branches:
   #     - main
+name: deploy-waxz/cf-proxy-ex
 
 jobs:
   deploy:
@@ -39,5 +40,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
-            pages project list
-            pages deploy
+            deploy
