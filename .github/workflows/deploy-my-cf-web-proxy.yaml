@@ -3,7 +3,7 @@ on:
   # push:
   #   branches:
   #     - main
-name: deploy-webproxy
+name: deploy-waxz-cf-web-proxy
 
 jobs:
   deploy:
@@ -13,13 +13,16 @@ jobs:
       contents: read
       deployments: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@master
+        with:
+          repository: waxz/cf-web-proxy
+          path: ./cf-web-proxy
+          submodules: recursive
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: "webproxy"
+          workingDirectory: "./cf-web-proxy"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
-            pages project list
             pages deploy

@@ -32,7 +32,16 @@ jobs:
           main = "$WORKER_ENTRY"
           compatibility_date = "$WORKER_COMPA_DATE"
           EOF
+
+          # change password
+          sed -i -e "s/.*const password = .*/const password = \"$CF_PROXY_PSW\";/"   $WORKER_ENTRY 
+          # change ico
+          sed -i -e "s#https://www.baidu.com/favicon.ico#https://global.discourse-cdn.com/cloudflare/optimized/1X/c99e9a961295c5f7c45006d52046d42a9bd09ceb_2_32x32.png#" $WORKER_ENTRY
+
         shell: bash
+        env:
+          CF_PROXY_PSW: ${{ secrets.CF_PROXY_PSW }}
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
