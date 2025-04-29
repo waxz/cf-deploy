@@ -18,7 +18,7 @@ jobs:
           repository: waxz/cf-web-proxy
           path: ./cf-web-proxy
           submodules: recursive
-      - name: Deploy
+      - name: Deploy Page
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: "./cf-web-proxy"

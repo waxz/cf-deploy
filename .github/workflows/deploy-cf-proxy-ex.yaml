@@ -46,7 +46,7 @@ jobs:
         env:
           CF_PROXY_PSW: ${{ secrets.CF_PROXY_PSW }}
 
-      - name: Deploy
+      - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           workingDirectory: "./cf-proxy-ex"

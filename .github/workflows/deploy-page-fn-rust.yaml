@@ -1,0 +1,54 @@
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+name: deploy-waxz/pages-fns-with-wasm-demo
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: waxz/pages-fns-with-wasm-demo
+          path: ./pages-fns-with-wasm-demo
+          submodules: recursive
+      - name: Install Pacakhe
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+        shell: bash
+
+      - name: Create wrangler configure file
+        run: |
+          cd ./pages-fns-with-wasm-demo
+
+          export PROJECT_NAME="pages-fns-with-wasm-demo"
+          export COMPA_DATE="2025-04-27"
+          export OUTPUT_PATH="./public/dist"
+
+          cat << EOF | tee wrangler.toml
+          # Top-level configuration
+          name = "$PROJECT_NAME"
+          compatibility_date = "$COMPA_DATE"
+          pages_build_output_dir = "$OUTPUT_PATH"
+          
+          EOF
+          npm run build:app-rust
+          npm run build:app-web
+
+        shell: bash
+      - name: Deploy Page
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: "./pages-fns-with-wasm-demo"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            pages deploy
+
