@@ -39,7 +39,7 @@ jobs:
           sed -i -e "s#https://www.baidu.com/favicon.ico#https://github.com/favicon.ico#" $WORKER_ENTRY
           # change home page
 
-          sed -i -e 's#const mainPage =.*#const mainPage = `</ul><form id="urlForm" onsubmit="redirectToProxy(event)"><fieldset><legend>Proxy Everything</legend><label for="targetUrl">TargetUrl: <input type="text" id="targetUrl" placeholder="Enter the target URL here..."></label><button type="submit" id="jumpButton">Jump!</button></fieldset></form><script>function redirectToProxy(event) {event.preventDefault();const targetUrl = document.getElementById('targetUrl').value.trim();const currentOrigin = window.location.origin;window.open(currentOrigin + '/' + targetUrl, '_blank');}</script><ul>`;\n \` #' $WORKER_ENTRY
+          sed -i -e 's#const mainPage =.*#const mainPage = `<!DOCTYPE html><html><body></ul><form id="urlForm" onsubmit="redirectToProxy(event)"><fieldset><legend>Proxy Everything</legend><label for="targetUrl">TargetUrl: <input type="text" id="targetUrl" placeholder="Enter the target URL here..."></label><button type="submit" id="jumpButton">Jump!</button></fieldset></form><script>function redirectToProxy(event) {event.preventDefault();const targetUrl = document.getElementById('targetUrl').value.trim();const currentOrigin = window.location.origin;window.open(currentOrigin + '/' + targetUrl, '_blank');}</script><ul></body></html>`;\n \` #' $WORKER_ENTRY
 
 
         shell: bash
