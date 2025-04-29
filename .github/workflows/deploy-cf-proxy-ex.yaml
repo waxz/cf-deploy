@@ -1,0 +1,43 @@
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: waxz/cf-proxy-ex
+          path: ./cf-proxy-ex
+          submodules: recursive
+      - name: Create wrangler configure file
+        run: |
+          cd ./cf-proxy-ex
+
+          export WORKER_PROJECT_NAME="cf-proxy-ex"
+          export WORKER_ENTRY="./_worker.js"
+          export WORKER_COMPA_DATE="2025-04-27"
+
+          cat << EOF | tee wrangler.toml
+          # Top-level configuration
+          name = "$WORKER_PROJECT_NAME"
+          main = "$WORKER_ENTRY"
+          compatibility_date = "$WORKER_COMPA_DATE"
+          EOF
+        shell: bash
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: "./cf-proxy-ex"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            pages project list
+            pages deploy
