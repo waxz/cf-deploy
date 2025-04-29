@@ -1,0 +1,38 @@
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+name: deploy-waxz/cloudflare-proxy-sites
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: waxz/cloudflare-proxy-sites
+          path: ./cloudflare-proxy-sites
+          submodules: recursive
+
+      - name: Create wrangler configure file
+        shell: bash
+        run: |
+          cd ./cloudflare-proxy-sites
+          sed  -i "s#.*const ownDomain.*#const ownDomain = \"cloudflare-proxy-sites.$CF_MY_DOMAIN\";#" ./index.js
+        env:
+          CF_PROXY_PSW: ${{ secrets.CF_PROXY_PSW }}
+          CF_MY_DOMAIN: ${{ secrets.CF_MY_DOMAIN }}
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: "./cloudflare-proxy-sites"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            deploy         
