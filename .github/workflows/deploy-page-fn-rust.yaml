@@ -39,6 +39,7 @@ jobs:
           pages_build_output_dir = "$OUTPUT_PATH"
           
           EOF
+          npm i
           npm run build:app-rust
           npm run build:app-web
 
