@@ -19,7 +19,7 @@ jobs:
           repository: waxz/pages-fns-with-wasm-demo
           path: ./pages-fns-with-wasm-demo
           submodules: recursive
-      - name: Install Pacakhe
+      - name: Install Package
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
         shell: bash
@@ -39,9 +39,9 @@ jobs:
           pages_build_output_dir = "$OUTPUT_PATH"
           
           EOF
-          npm i
-          npm run build:app-rust
-          npm run build:app-web
+          yarn
+          yarn build:app-rust
+          yarn build:app-web
 
         shell: bash
       - name: Deploy Page
