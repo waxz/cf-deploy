@@ -22,7 +22,7 @@ jobs:
       - name: Create wrangler configure file
         shell: bash
         run: |
-          cd ./cloudflare-proxy-sites
+          cd ./gemini-cli-openai
           sed  -i "s#.*{ binding =.*#{ binding = \"GEMINI_CLI_KV\", id = \"$GEMINI_CLI_KV_ID\";#" ./wrangler.toml
         env:
           GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
@@ -30,7 +30,7 @@ jobs:
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: "./cloudflare-proxy-sites"
+          workingDirectory: "./gemini-cli-openai"
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
