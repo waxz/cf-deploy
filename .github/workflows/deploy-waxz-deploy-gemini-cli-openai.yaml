@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           cd ./gemini-cli-openai
-          sed  -i "s#.*{ binding =.*#{ binding = \"GEMINI_CLI_KV\", id = \"$GEMINI_CLI_KV_ID\";#" ./wrangler.toml
+          sed  -i "s#.*{ binding =.*#{ binding = \"GEMINI_CLI_KV\", id = \"$GEMINI_CLI_KV_ID\"}#" ./wrangler.toml
         env:
           GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
 
