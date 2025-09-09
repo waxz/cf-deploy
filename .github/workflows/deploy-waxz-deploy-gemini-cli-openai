@@ -1,0 +1,37 @@
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+name: deploy-waxz/gemini-cli-openai
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: waxz/gemini-cli-openai
+          path: ./gemini-cli-openai
+          submodules: recursive
+
+      - name: Create wrangler configure file
+        shell: bash
+        run: |
+          cd ./cloudflare-proxy-sites
+          sed  -i "s#.*{ binding =.*#{ binding = \"GEMINI_CLI_KV\", id = \"$GEMINI_CLI_KV_ID\";#" ./wrangler.toml
+        env:
+          GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          workingDirectory: "./cloudflare-proxy-sites"
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            deploy         
