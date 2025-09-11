@@ -1,0 +1,37 @@
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+name: deploy-waxz/lobe-chat
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+    - uses: actions/checkout@master
+      with:
+          repository: waxz/lobe-chat
+          path: ./lobe-chat
+          submodules: recursive
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.0
+        cache: 'npm'
+    - name: Install vercel
+      run: |
+          npm i -g vercel
+          vercel --token $VERCEL_TOKEN
+      env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    - name: vercel build
+      shell: bash
+      run: |
+          cd ./lobe-chat
+          vecel build
