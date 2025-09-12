@@ -28,7 +28,7 @@ jobs:
       uses: oven-sh/setup-bun@v1 # Use the latest stable version
     - name: Install Vercel CLI
       run: |
-          npm install --global vercel@latest
+          npm install --global vercel@43.3.0
     - name: Pull Vercel Environment Information
       run: |
           cd ./lobe-chat
