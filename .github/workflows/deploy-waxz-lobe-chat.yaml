@@ -4,7 +4,10 @@ on:
   #   branches:
   #     - main
 name: deploy-waxz/lobe-chat
-
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,20 +21,19 @@ jobs:
           repository: waxz/lobe-chat
           path: ./lobe-chat
           submodules: recursive
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22.0
-        # cache: 'npm'
-    - name: Install vercel
-      run: |
-          npm i -g vercel
-          vercel --token $VERCEL_TOKEN
-      env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-    - name: vercel build
-      shell: bash
+    - name: Install Vercel CLI
       run: |
           cd ./lobe-chat
-          vecel build
+          npm install --global vercel@latest
+    - name: Pull Vercel Environment Information
+      run: |
+          cd ./lobe-chat
+           vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Build Project Artifacts
+      run: |
+          cd ./lobe-chat
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Deploy Project Artifacts to Vercel
+      run: |
+          cd ./lobe-chat
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
