@@ -41,5 +41,5 @@ jobs:
     - name: Deploy Project Artifacts to Vercel
       run: |
           cd ./lobe-chat
-          # vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
+          # vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --archive=tgz
