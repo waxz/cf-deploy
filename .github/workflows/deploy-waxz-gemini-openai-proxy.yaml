@@ -18,59 +18,71 @@ jobs:
           repository: waxz/gemini-openai-proxy
           path: ./gemini-openai-proxy
           submodules: recursive
-
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
       - name: Create wrangler configure file
         shell: bash
         run: |
           cd ./gemini-openai-proxy
+          deno task build:deno
+          mkdir -p cf
+          cp ./dist/main_cloudflare-workers.mjs ./cf/_worker.js
+          
+          
+      
+      # - name: Create wrangler configure file
+      #   shell: bash
+      #   run: |
+      #     cd ./gemini-openai-proxy
         
 
-          cat << EOF > ./package.json
-          {
-          "name": "gemini-openai-proxy",
-          "private": true,
-          "version": "0.15.0",
-          "author": "zuisong",
-          "homepage": "https://github.com/zuisong/gemini-openai-proxy",
-          "type": "module",
-          "license": "MIT",
-          "scripts": {
-          "start:bun": "bun main_bun.ts",
-          "start:deno": "deno run --allow-net --allow-env main_deno.ts",
-          "start:node": "npm run build:node && node dist/main_node.mjs",
-          "build:bun": "bun run build.mjs",
-          "build:deno": "deno run --allow-read --allow-env --allow-write=./dist --allow-run build.mjs",
-          "build:rollup": "deno run --allow-ffi --allow-write=./dist --allow-read --allow-env build.mjs",
-          "build:node": "node build.mjs",
-          "test:deno": "deno test --allow-net --allow-env",
-          "test-cov": "deno test --coverage -A --env && deno coverage coverage --lcov --output=coverage/lcov.info"          },
-          "dependencies": {
-                    "@hono/node-server": "1.14.1",
-                    "eventsource-parser": "3.0.1",
-                    "itty-router": "5.0.18"
-          },
-          "devDependencies": {
-          "@total-typescript/ts-reset": "0.6.1",
-          "esbuild": "0.25.2"
-          },
-          "engines": {
-          "node": ">=18.0.0",
-          "bun": ">=1.23.0",
-          "deno": ">=1.40.0"
-          }          
-          }
-          EOF
-          npm i
-          mkdir -p cf
+      #     cat << EOF > ./package.json
+      #     {
+      #     "name": "gemini-openai-proxy",
+      #     "private": true,
+      #     "version": "0.15.0",
+      #     "author": "zuisong",
+      #     "homepage": "https://github.com/zuisong/gemini-openai-proxy",
+      #     "type": "module",
+      #     "license": "MIT",
+      #     "scripts": {
+      #     "start:bun": "bun main_bun.ts",
+      #     "start:deno": "deno run --allow-net --allow-env main_deno.ts",
+      #     "start:node": "npm run build:node && node dist/main_node.mjs",
+      #     "build:bun": "bun run build.mjs",
+      #     "build:deno": "deno run --allow-read --allow-env --allow-write=./dist --allow-run build.mjs",
+      #     "build:rollup": "deno run --allow-ffi --allow-write=./dist --allow-read --allow-env build.mjs",
+      #     "build:node": "node build.mjs",
+      #     "test:deno": "deno test --allow-net --allow-env",
+      #     "test-cov": "deno test --coverage -A --env && deno coverage coverage --lcov --output=coverage/lcov.info"          },
+      #     "dependencies": {
+      #               "@hono/node-server": "1.14.1",
+      #               "eventsource-parser": "3.0.1",
+      #               "itty-router": "5.0.18"
+      #     },
+      #     "devDependencies": {
+      #     "@total-typescript/ts-reset": "0.6.1",
+      #     "esbuild": "0.25.2"
+      #     },
+      #     "engines": {
+      #     "node": ">=18.0.0",
+      #     "bun": ">=1.23.0",
+      #     "deno": ">=1.40.0"
+      #     }          
+      #     }
+      #     EOF
+      #     npm i
+      #     npm install -g deno
+      #     mkdir -p cf
 
-          cat << EOF > ./cf/_worker.ts
-          import { app } from "../src/app.ts"
-          export default {
-          fetch: app.fetch,
-          }
-          EOF
-        env:
-          GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
+      #     cat << EOF > ./cf/_worker.ts
+      #     import { app } from "../src/app.ts"
+      #     export default {
+      #     fetch: app.fetch,
+      #     }
+      #     EOF
+      #   env:
+      #     GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
 
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
