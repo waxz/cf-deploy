@@ -12,3 +12,9 @@ Deploy project to cloudflare workers/pages and vercel
 ## vercel
 
 1. set vercel_token, team id, project_id
+
+
+## project
+- [lobe-chat](https://github.com/waxz/lobe-chat)
+- [gemini-openai-proxy](https://github.com/waxz/gemini-openai-proxy)
+- [gemini-cli-openai](https://github.com/waxz/gemini-cli-openai)
