@@ -92,4 +92,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
             deploy
-            pages deploy ./dist
+            pages deploy ./dist --project-name gemini-cli-worker
