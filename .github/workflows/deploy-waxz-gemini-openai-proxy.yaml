@@ -61,6 +61,14 @@ jobs:
           }
           EOF
           npm i
+          mkdir -p cf
+
+          cat << EOF > ./cf/_worker.ts
+          import { app } from "../src/app.ts"
+          export default {
+          fetch: app.fetch,
+          }
+          EOF
         env:
           GEMINI_CLI_KV_ID: ${{ secrets.GEMINI_CLI_KV_ID }}
 
@@ -71,8 +79,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
-            deploy main_cloudflare-workers.ts --name gemini-openai --compatibility-date 2025-10-04
-            pages deploy main_cloudflare-workers.ts --project-name gemini-openai
+            deploy ./cf/_worker.ts --name gemini-openai --compatibility-date 2025-10-04
+            pages deploy ./cf --project-name gemini-openai
             
 
             
