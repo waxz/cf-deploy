@@ -15,6 +15,6 @@ Deploy project to cloudflare workers/pages and vercel
 
 
 ## project
-- [lobe-chat](https://github.com/waxz/lobe-chat)
-- [gemini-openai-proxy](https://github.com/waxz/gemini-openai-proxy)
-- [gemini-cli-openai](https://github.com/waxz/gemini-cli-openai)
+- [lobe-chat](https://github.com/waxz/lobe-chat) on vercel
+- [gemini-openai-proxy](https://github.com/waxz/gemini-openai-proxy) on cloudflare workers/pages
+- [gemini-cli-openai](https://github.com/waxz/gemini-cli-openai) on cloudflare workers/pages
