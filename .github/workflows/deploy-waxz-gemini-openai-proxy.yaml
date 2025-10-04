@@ -71,7 +71,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
-            deploy main_cloudflare-workers.ts --name gemini-openai
+            deploy main_cloudflare-workers.ts --name gemini-openai --compatibility-date 2025-10-04
             pages deploy main_cloudflare-workers.ts --project-name gemini-openai
             
 
