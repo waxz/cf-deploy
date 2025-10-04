@@ -27,14 +27,12 @@ jobs:
         run: |
           cd ./gemini-cli-openai
           sed  -i "s#.*{ binding =.*#{ binding = \"GEMINI_CLI_KV\", id = \"$GEMINI_CLI_KV_ID\"}#" ./wrangler.toml
-
+          
+          
           cat << EOF > ./build.ts
           import { emptyDirSync } from "jsr:@std/fs"
-          
-          emptyDirSync("./dist")
-          new Deno.Command(Deno.execPath(), {
-              args: ["bundle", `src/index.ts`, "-o", `dist/_worker.js`, "--sourcemap"],
-            }).outputSync()
+          emptyDirSync("./dist");
+          new Deno.Command(Deno.execPath(), { args: ["bundle", "src/index.ts", "-o", "dist/_worker.js", "--sourcemap"]}).outputSync();
           EOF
 
           # deno.jsonc
