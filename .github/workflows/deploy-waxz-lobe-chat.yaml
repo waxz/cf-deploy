@@ -30,6 +30,7 @@ jobs:
           path: ./lobe-chat
           submodules: recursive
           ref: ${{ inputs.tags }}
+          fetch-tags : true
     - uses: actions/setup-node@v5
       with:
           node-version: 22
