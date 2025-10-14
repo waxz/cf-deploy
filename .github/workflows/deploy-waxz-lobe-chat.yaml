@@ -1,5 +1,11 @@
 on:
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Test scenario tags'
+        required: true
+        type: string
+      
   # push:
   #   branches:
   #     - main
@@ -16,11 +22,14 @@ jobs:
       contents: read
       deployments: write
     steps:
+    - name: Print the input tag to STDOUT
+      run: echo  The tags are ${{ inputs.tags }} 
     - uses: actions/checkout@master
       with:
           repository: waxz/lobe-chat
           path: ./lobe-chat
           submodules: recursive
+          ref: ${{ inputs.tags }}
     - uses: actions/setup-node@v5
       with:
           node-version: 22
