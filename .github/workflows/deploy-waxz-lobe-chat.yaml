@@ -24,7 +24,7 @@ jobs:
     steps:
     - name: Print the input tag to STDOUT
       run: echo  The tags are ${{ inputs.tags }} 
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v5
       with:
           repository: waxz/lobe-chat
           path: ./lobe-chat
