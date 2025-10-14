@@ -26,7 +26,7 @@ jobs:
       run: echo  The tags are ${{ inputs.tags }} 
     - uses: actions/checkout@v5
       with:
-          repository: waxz/lobe-chat
+          repository: lobehub/lobe-chat
           path: ./lobe-chat
           submodules: recursive
           ref: ${{ inputs.tags }}
